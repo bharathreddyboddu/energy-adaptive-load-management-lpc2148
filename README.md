@@ -1,19 +1,12 @@
 # Energy Adaptive Load Management using LPC2148
 
-A microcontroller-based load monitoring and control system using
-the LPC2148, ADC, current sensing, relays, ULN2003A relay driver,
-and a 16×2 LCD.
+A microcontroller-based load monitoring and control system using the LPC2148, ADC, current sensing, relays, ULN2003A relay driver, and a 16×2 LCD.
 
 ## Project Overview
 
-The system monitors the electrical loading condition through a
-current sensor. The sensor output is converted into a digital
-value using the LPC2148 ADC.
+The system monitors the electrical loading condition through a current sensor. The sensor output is converted into a digital value using the LPC2148 ADC.
 
-Based on predefined threshold levels, the microcontroller
-controls multiple loads through relays.
-
-The LCD displays the ADC value and the corresponding load status.
+Based on predefined threshold levels, the microcontroller controls multiple loads through relays. The LCD displays the ADC value and the corresponding load status.
 
 ## System Flow
 
@@ -23,22 +16,24 @@ LPC2148 ADC
 ↓
 Load Condition Detection
 ↓
-Threshold-based Decision
+Threshold-Based Decision
 ↓
 ULN2003A Relay Driver
 ↓
-Relay-controlled Loads
+Relay-Controlled Loads
 ↓
-LCD Status Display
+16×2 LCD Status Display
 
-## Hardware
+## Hardware Used
 
-- LPC2148
+- LPC2148 Microcontroller
 - Current Sensor
+- 10-bit ADC
 - ULN2003A Relay Driver
 - 4-Channel Relay
 - 16×2 LCD
 - LED Loads
+- Breadboard and Connecting Wires
 - Power Supply
 
 ## Software and Tools
@@ -48,37 +43,43 @@ LCD Status Display
 - Proteus 8 Professional
 - Flash Magic
 
-## Working
+## Load Control Logic
 
-The LPC2148 reads the analog output from the current sensor
-through its ADC.
+The ADC value is used to determine the loading condition.
 
-The ADC produces a 10-bit digital value from 0 to 1023.
+| ADC Range | Load Control |
+|---|---|
+| ADC < 530 | L1, L2, L3, L4 ON |
+| 530 ≤ ADC < 560 | L4 OFF |
+| 560 ≤ ADC < 590 | L3 and L4 OFF |
+| ADC ≥ 590 | Only L1 ON |
 
-The system uses threshold levels to classify the loading
-condition and control the connected loads.
+## Project Structure
 
-### Load Conditions
-
-| ADC Range | Load Condition | Relay Action |
-|---|---|---|
-| < 520 | Low load | All loads ON |
-| 520–535 | Medium load | Load 4 OFF |
-| 535–545 | High load | Loads 3 and 4 OFF |
-| > 545 | Very high load | Only Load 1 ON |
-
-## Results
-
-The system was tested both in Proteus simulation and using
-the hardware setup.
-
-Different load conditions produced different ADC values,
-and the LPC2148 controlled the relays accordingly.
-
-## Project Files
-
-- `src/` - Embedded C source code
-- `simulation/` - Proteus circuit and simulation files
-- `hardware/` - Hardware setup and output images
-- `docs/` - Project documentation
-
+```text
+energy-adaptive-load-management-lpc2148/
+│
+├── docs/
+│   └── Energy-Adaptive-Load-Management-Report.pdf
+│
+├── hardware/
+│   ├── LPCBoard_Case_1.png
+│   ├── LPCBoard_Case_2.png
+│   ├── LPCBoard_Case_3.png
+│   ├── LPCBoard_Case_4.png
+│   ├── Loads_Case_1.png
+│   ├── Loads_Case_2.png
+│   ├── Loads_Case_3.png
+│   └── Loads_Case_4.png
+│
+├── simulation/
+│   ├── Proteus_Case_1.png
+│   ├── Proteus_Case_2.png
+│   ├── Proteus_Case_3.png
+│   └── Proteus_Case_4.png
+│
+├── src/
+│   └── main.c
+│
+├── .gitignore
+└── README.md
